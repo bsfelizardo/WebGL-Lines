@@ -1,0 +1,573 @@
+<!doctype html>
+<html>
+<head>
+  <title>WebGL Demo</title>
+</head>
+
+<body>
+  <canvas id="output" width="640" height="480"></canvas>
+  
+  <!-- VERTEX SHADER -->
+  <script id="vertex-shader" type="notjs">#version 300 es
+    in vec4 a_position;
+    in float a_point_size;
+    void main() {
+      gl_Position = a_position;
+      gl_PointSize = a_point_size;
+    } 
+  </script>
+
+  <!-- FRAGMENT SHADER -->
+  <script id="fragment-shader" type="notjs">#version 300 es
+    precision mediump float;
+
+    out vec4 outColor;
+    
+    void main() {
+      outColor = vec4(1, 0, 0, 1); //red
+    }
+  </script>
+
+  <!-- Function for creating and compiling shader programs -->
+  <script>
+  function createShader (gl, type, sourceCode) {
+  // Compiles either a shader of type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
+  var shader = gl.createShader( type );
+  gl.shaderSource( shader, sourceCode );
+  gl.compileShader( shader );
+
+  if ( !gl.getShaderParameter(shader, gl.COMPILE_STATUS) ) {
+    var info = gl.getShaderInfoLog( shader );
+    throw 'Could not compile WebGL program. \n\n' + info;
+  }
+  return shader;
+}
+</script>
+  
+  <!-- Main function contains: 
+    1) declaration of WebGL context
+    2) function calls to initialize the shader programs
+    3) draw functions
+  -->
+  <script> 
+    function main() {
+      const canvas = document.querySelector('#output');
+      if(!canvas){
+        console.log("Canvas element with specified ID ('output') cannot be found.");
+      }
+
+      //Setting up the WebGL Context
+      const gl = canvas.getContext('webgl2');
+      const vertexShaderSource = document.querySelector('#vertex-shader').text;
+      const fragmentShaderSource = document.querySelector('#fragment-shader').text;
+      const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+      const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+      
+      //Creation and initialization of GL program 
+      var program = gl.createProgram();
+
+      // Attach pre-existing shaders
+      gl.attachShader(program, vertexShader);
+      gl.attachShader(program, fragmentShader);
+
+      gl.linkProgram(program);
+
+      if ( !gl.getProgramParameter( program, gl.LINK_STATUS) ) {
+        var info = gl.getProgramInfoLog(program);
+        throw 'Could not compile WebGL program. \n\n' + info;
+      }
+
+      // set the program created earlier
+      gl.useProgram(program);
+
+      // clear the screen before drawing anything
+      gl.clearColor(0.0, 0.0, 0.0, 1.0); // black - RGBA
+      gl.clear(gl.COLOR_BUFFER_BIT); //execute
+
+
+      // Declaration of pointers to the attributes
+      const aPositionPointer = gl.getAttribLocation(program, 'a_position');
+      const aPointSizePointer = gl.getAttribLocation(program, 'a_point_size');
+      // set the values (starting point)
+      gl.vertexAttrib4f(aPositionPointer, 0.0, 0.0, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.vertexAttrib1f(aPointSizePointer, 5.0);
+
+      let offset = 0; // start index
+      let count = 1; // only one point
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // nose center + right
+      gl.vertexAttrib4f(aPositionPointer, 0.035, -0.01, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.05, -0.05, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.06, -0.1, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.07, -0.15, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.05, -0.2, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.02, -0.21, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.0, -0.21, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      
+      //nose left
+      gl.vertexAttrib4f(aPositionPointer, -0.035, -0.01, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.05, -0.05, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.06, -0.1, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.07, -0.15, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.05, -0.2, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.02, -0.21, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // upper lip midline
+      gl.vertexAttrib4f(aPositionPointer, 0.0, -0.25, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.0, -0.3, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      //upper lip right
+      gl.vertexAttrib4f(aPositionPointer, 0.03, -0.32, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.06, -0.33, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.09, -0.33, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.12, -0.32, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.15, -0.3, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.18, -0.27, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.21, -0.24, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      //upper lip left
+      gl.vertexAttrib4f(aPositionPointer, -0.03, -0.32, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.06, -0.33, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.09, -0.33, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.12, -0.32, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.15, -0.3, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.18, -0.27, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.21, -0.24, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      
+      //lower lip center
+      gl.vertexAttrib4f(aPositionPointer, 0.0, -0.44, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      //lower lip right
+      gl.vertexAttrib4f(aPositionPointer, 0.03, -0.43, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.05, -0.40, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.07, -0.37, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      //lower lip left
+      gl.vertexAttrib4f(aPositionPointer, -0.03, -0.43, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.05, -0.40, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.07, -0.37, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // right eye bottom and top center
+      gl.vertexAttrib4f(aPositionPointer, 0.21, 0.0, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.21, 0.18, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // right eye right side
+      gl.vertexAttrib4f(aPositionPointer, 0.24, 0.01, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.27, 0.035, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.28, 0.07, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.28, 0.11, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.27, 0.145, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.24, 0.175, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      
+      // right eye left side
+      gl.vertexAttrib4f(aPositionPointer, 0.18, 0.01, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.15, 0.035, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.14, 0.07, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.14, 0.11, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.15, 0.145, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.18, 0.175, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // right eye bottom and top center
+      gl.vertexAttrib4f(aPositionPointer, -0.21, 0.0, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.21, 0.18, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // right eye right side
+      gl.vertexAttrib4f(aPositionPointer, -0.24, 0.01, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.27, 0.035, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.28, 0.07, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.28, 0.11, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.27, 0.145, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.24, 0.175, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      
+      // right eye left side
+      gl.vertexAttrib4f(aPositionPointer, -0.18, 0.01, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.15, 0.035, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.14, 0.07, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.14, 0.11, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.15, 0.145, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.18, 0.175, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // connection point of rounded cheeks to head
+      gl.vertexAttrib4f(aPositionPointer, 0.4, 0.0, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.4, 0.0, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // center of chin
+      gl.vertexAttrib4f(aPositionPointer, 0.0, -0.6, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // right cheek
+      gl.vertexAttrib4f(aPositionPointer, 0.03, -0.59, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.06, -0.58, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.09, -0.57, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.12, -0.56, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.15, -0.55, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.18, -0.54, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.21, -0.53, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.24, -0.52, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.27, -0.51, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.30, -0.50, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.33, -0.48, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.35, -0.45, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.37, -0.42, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.39, -0.39, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.41, -0.36, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.43, -0.33, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.44, -0.29, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.45, -0.25, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.46, -0.21, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.47, -0.17, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.47, -0.13, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.45, -0.09, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.44, -0.05, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.43, -0.01, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // left cheek
+      gl.vertexAttrib4f(aPositionPointer, -0.03, -0.59, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.06, -0.58, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.09, -0.57, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.12, -0.56, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.15, -0.55, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.18, -0.54, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.21, -0.53, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.24, -0.52, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.27, -0.51, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.30, -0.50, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.33, -0.48, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.35, -0.45, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.37, -0.42, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.39, -0.39, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.41, -0.36, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.43, -0.33, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.44, -0.29, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.45, -0.25, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.46, -0.21, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.47, -0.17, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.47, -0.13, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.45, -0.09, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.44, -0.05, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.43, -0.01, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // right head
+      gl.vertexAttrib4f(aPositionPointer, 0.39, 0.04, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.38, 0.08, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.37, 0.12, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.35, 0.16, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.33, 0.2, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.31, 0.24, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.29, 0.28, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.27, 0.32, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.25, 0.36, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.22, 0.38, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.19, 0.4, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.16, 0.42, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.13, 0.44, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.1, 0.46, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.06, 0.47, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.03, 0.47, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // head center
+      gl.vertexAttrib4f(aPositionPointer, 0.0, 0.47, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // left head
+      gl.vertexAttrib4f(aPositionPointer, -0.39, 0.04, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.38, 0.08, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.37, 0.12, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.35, 0.16, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.33, 0.2, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.31, 0.24, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.29, 0.28, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.27, 0.32, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.25, 0.36, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.22, 0.38, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.19, 0.4, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.16, 0.42, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.13, 0.44, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.1, 0.46, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.06, 0.47, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.03, 0.47, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // right ear 
+      gl.vertexAttrib4f(aPositionPointer, 0.02, 0.51, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.03, 0.55, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.04, 0.59, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.05, 0.63, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.08, 0.65, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.11, 0.63, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.14, 0.59, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.17, 0.55, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.20, 0.51, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.23, 0.48, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.25, 0.44, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, 0.27, 0.4, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // left ear 
+      gl.vertexAttrib4f(aPositionPointer, -0.02, 0.51, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.03, 0.55, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.04, 0.59, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.05, 0.63, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.08, 0.65, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.11, 0.63, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.14, 0.59, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.17, 0.55, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.20, 0.51, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.23, 0.48, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.25, 0.44, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.27, 0.4, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      
+
+
+      gl.vertexAttrib4f(aPositionPointer, -0.035, -0.01, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.05, -0.05, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.06, -0.1, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.07, -0.15, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.05, -0.2, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+      gl.vertexAttrib4f(aPositionPointer, -0.02, -0.21, 0.0, 1.0); // x=0, y=0, z=0, w=1
+      gl.drawArrays(gl.POINTS, offset, count);
+
+      // LINES
+      var vertices = [
+        // nose
+        0.0, 0.0, 0.035, -0.01,
+        0.035, -0.01, 0.05, -0.05,
+        0.05, -0.05, 0.06, -0.1,
+        0.06, -0.1, 0.07, -0.15,
+        0.07, -0.15, 0.05, -0.2,
+        0.05, -0.2, 0.02, -0.21,
+        0.02, -0.21, 0.0, -0.21,
+        0.0, -0.21, -0.02, -0.21,
+        -0.02, -0.21, -0.05, -0.2,
+        -0.05, -0.2, -0.07, -0.15,
+        -0.07, -0.15, -0.06, -0.1,
+        -0.06, -0.1, -0.05, -0.05,
+        -0.05, -0.05, -0.035, -0.01,
+        -0.035, -0.01, 0.0, 0.0,
+
+        // upper lip midline
+        0.0, -0.21, 0.0, -0.25,
+        0.0, -0.25, 0.0, -0.3,
+
+        // upper lip right
+        0.0, -0.3, 0.03, -0.32,
+        0.03, -0.32, 0.06, -0.33,
+        0.06, -0.33, 0.09, -0.33,
+        0.09, -0.33, 0.12, -0.32,
+        0.12, -0.32, 0.15, -0.3,
+        0.15, -0.3, 0.18, -0.27,
+        0.18, -0.27, 0.21, -0.24,
+
+        // upper lip left
+        0.0, -0.3, -0.03, -0.32,
+        -0.03, -0.32, -0.06, -0.33,
+        -0.06, -0.33, -0.09, -0.33,
+        -0.09, -0.33, -0.12, -0.32,
+        -0.12, -0.32, -0.15, -0.3,
+        -0.15, -0.3, -0.18, -0.27,
+        -0.18, -0.27, -0.21, -0.24,
+
+        // lower lip right
+        0.0, -0.44, 0.03, -0.43,
+        0.03, -0.43, 0.05, -0.40,
+        0.05, -0.40, 0.07, -0.37,
+        0.07, -0.37, 0.09, -0.33,
+
+        // lower lip left
+        0.0, -0.44, -0.03, -0.43,
+        -0.03, -0.43, -0.05, -0.40,
+        -0.05, -0.40, -0.07, -0.37,
+        -0.07, -0.37, -0.09, -0.33,
+
+      ];
+        var vertexBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+  
+
+        gl.enableVertexAttribArray(aPositionPointer);
+        gl.vertexAttribPointer(aPositionPointer, 2, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.LINES, 0, 100);
+    }
+
+      
+
+    // call the main program
+    main();
+  </script>
+</body>
+</html>
