@@ -21,10 +21,12 @@
   <script id="fragment-shader" type="notjs">#version 300 es
     precision mediump float;
 
+    uniform vec4 u_color;
+
     out vec4 outColor;
     
     void main() {
-      outColor = vec4(1, 1, 1, 1); //red
+      outColor = u_color * vec4(1, 1, 1, 1); //red
     }
   </script>
 
@@ -960,7 +962,11 @@
 
         gl.enableVertexAttribArray(aPositionPointer);
         gl.vertexAttribPointer(aPositionPointer, 2, gl.FLOAT, false, 0, 0);
-        // gl.vertexAttribPointer(aVertexColor, 4, gl.UNSIGNED_BYTE, true, 16, 12);
+        
+        const u_colorLocation = gl.getUniformLocation(program, 'u_color');
+
+        gl.uniform4fv(u_colorLocation, [1.0, 0.0, 0.0, 1.0]);
+        
         gl.drawArrays(gl.LINES, 0, vertices.length);
     }
 
