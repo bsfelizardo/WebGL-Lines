@@ -24,7 +24,7 @@
     out vec4 outColor;
     
     void main() {
-      outColor = vec4(1, 0, 0, 1); //red
+      outColor = vec4(1, 1, 1, 1); //red
     }
   </script>
 
@@ -41,8 +41,8 @@
     throw 'Could not compile WebGL program. \n\n' + info;
   }
   return shader;
-}
-</script>
+  }
+  </script>
   
   <!-- Main function contains: 
     1) declaration of WebGL context
@@ -492,8 +492,6 @@
       gl.drawArrays(gl.POINTS, offset, count);
       gl.vertexAttrib4f(aPositionPointer, -0.67, -0.7, 0.0, 1.0); // x=0, y=0, z=0, w=1
       gl.drawArrays(gl.POINTS, offset, count);
-      // gl.vertexAttrib4f(aPositionPointer, -0.64, -0.7, 0.0, 1.0); // x=0, y=0, z=0, w=1
-      // gl.drawArrays(gl.POINTS, offset, count);
       gl.vertexAttrib4f(aPositionPointer, -0.64, -0.74, 0.0, 1.0); // x=0, y=0, z=0, w=1
       gl.drawArrays(gl.POINTS, offset, count);
       gl.vertexAttrib4f(aPositionPointer, -0.64, -0.78, 0.0, 1.0); // x=0, y=0, z=0, w=1
@@ -508,16 +506,12 @@
       gl.drawArrays(gl.POINTS, offset, count);
       gl.vertexAttrib4f(aPositionPointer, -0.73, -0.7, 0.0, 1.0); // x=0, y=0, z=0, w=1
       gl.drawArrays(gl.POINTS, offset, count);
-      // gl.vertexAttrib4f(aPositionPointer, -0.76, -0.7, 0.0, 1.0); // x=0, y=0, z=0, w=1
-      // gl.drawArrays(gl.POINTS, offset, count);
       gl.vertexAttrib4f(aPositionPointer, -0.76, -0.74, 0.0, 1.0); // x=0, y=0, z=0, w=1
       gl.drawArrays(gl.POINTS, offset, count);
       gl.vertexAttrib4f(aPositionPointer, -0.76, -0.78, 0.0, 1.0); // x=0, y=0, z=0, w=1
       gl.drawArrays(gl.POINTS, offset, count);
       gl.vertexAttrib4f(aPositionPointer, -0.76, -0.82, 0.0, 1.0); // x=0, y=0, z=0, w=1
       gl.drawArrays(gl.POINTS, offset, count);
-      // gl.vertexAttrib4f(aPositionPointer, -0.76, -0.86, 0.0, 1.0); // x=0, y=0, z=0, w=1
-      // gl.drawArrays(gl.POINTS, offset, count);
       gl.vertexAttrib4f(aPositionPointer, -0.73, -0.86, 0.0, 1.0); // x=0, y=0, z=0, w=1
       gl.drawArrays(gl.POINTS, offset, count);
 
@@ -857,6 +851,107 @@
         -0.23, 0.48, -0.25, 0.44,
         -0.25, 0.44, -0.27, 0.4,
         -0.27, 0.4, -0.25, 0.36,
+
+        // Letter Q
+        -0.7, -0.7,  -0.67, -0.7,
+        -0.67, -0.7, -0.64, -0.74,
+        -0.64, -0.74, -0.64, -0.78,
+        -0.64, -0.78, -0.64, -0.82,
+        -0.64, -0.82, -0.67, -0.86,
+        -0.67, -0.86, -0.7, -0.86,
+        -0.7, -0.86, -0.73, -0.86,
+        -0.73, -0.86, -0.76, -0.82,
+        -0.76, -0.82, -0.76, -0.78,
+        -0.76, -0.78, -0.76, -0.74,
+        -0.76, -0.74, -0.73, -0.7,
+        -0.73, -0.7, -0.7, -0.7,
+
+        -0.7, -0.78, -0.67, -0.82,
+        -0.67, -0.82, -0.64, -0.86,
+        -0.64, -0.86, -0.61, -0.9,
+
+        // Letter U
+        -0.43, -0.7, -0.43, -0.74,
+        -0.43, -0.74, -0.43, -0.78,
+        -0.43, -0.78, -0.43, -0.82,
+        -0.43, -0.82, -0.46, -0.86,
+        -0.46, -0.86, -0.49, -0.86,
+        -0.49, -0.86, -0.52, -0.86,
+        -0.52, -0.86, -0.55, -0.82,
+        -0.55, -0.82, -0.55, -0.78,
+        -0.55, -0.78, -0.55, -0.74,
+        -0.55, -0.74, -0.55, -0.7,
+
+        // Letter O
+        -0.28, -0.7, -0.25, -0.7,
+        -0.25, -0.7, -0.22, -0.74,
+        -0.22, -0.74, -0.22, -0.78,
+        -0.22, -0.78, -0.22, -0.82,
+        -0.22, -0.82, -0.25, -0.86,
+        -0.25, -0.86, -0.28, -0.86,
+        -0.28, -0.86, -0.31, -0.86,
+        -0.31, -0.86, -0.34, -0.82,
+        -0.34, -0.82, -0.34, -0.78,
+        -0.34, -0.78, -0.34, -0.74,
+        -0.34, -0.74, -0.31, -0.7,
+        -0.31, -0.7, -0.28, -0.7,
+
+        // First Letter K
+        //    straight line
+        -0.13, -0.7, -0.13, -0.74,
+        -0.13, -0.74, -0.13, -0.78,
+        -0.13, -0.78, -0.13, -0.82,
+        -0.13, -0.82, -0.13, -0.86,
+
+        //    connection to intersecting lines
+        -0.13, -0.78, -0.1, -0.78,
+
+        //    upper intersecting line
+        -0.1, -0.78, -0.07, -0.74,
+        -0.07, -0.74, -0.04, -0.7,
+
+        //    lower intersecting line
+        -0.1, -0.78, -0.07, -0.82,
+        -0.07, -0.82, -0.04, -0.86,
+
+      // // Second Letter K
+      //    straight line
+        0.08, -0.7, 0.08, -0.74,
+        0.08, -0.74, 0.08, -0.78,
+        0.08, -0.78, 0.08, -0.82,
+        0.08, -0.82, 0.08, -0.86,
+
+        //    connection to intersecting lines
+        0.08, -0.78, 0.11, -0.78,
+
+        //    upper intersecting line
+        0.11, -0.78, 0.14, -0.74,
+        0.14, -0.74, 0.17, -0.7,
+
+        //    lower intersecting line
+        0.11, -0.78, 0.14, -0.82,
+        0.14, -0.82, 0.17, -0.86,
+
+        // Letter A
+        //    right arch
+        0.35, -0.7, 0.38, -0.7,
+        0.38, -0.7, 0.41, -0.74,
+        0.41, -0.74, 0.41, -0.78,
+        0.41, -0.78, 0.41, -0.82,
+        0.41, -0.82, 0.41, -0.86,
+
+        //    left arch
+        0.35, -0.7, 0.32, -0.7,
+        0.32, -0.7, 0.29, -0.74,
+        0.29, -0.74, 0.29, -0.78,
+        0.29, -0.78, 0.29, -0.82,
+        0.29, -0.82, 0.29, -0.86,
+
+        //    horizontal
+        0.29, -0.78, 0.32, -0.78,
+        0.32, -0.78, 0.35, -0.78,
+        0.35, -0.78, 0.38, -0.78,
+        0.38, -0.78, 0.41, -0.78,
       ];
         var vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -865,10 +960,9 @@
 
         gl.enableVertexAttribArray(aPositionPointer);
         gl.vertexAttribPointer(aPositionPointer, 2, gl.FLOAT, false, 0, 0);
-        gl.drawArrays(gl.LINES, 0, 500);
+        // gl.vertexAttribPointer(aVertexColor, 4, gl.UNSIGNED_BYTE, true, 16, 12);
+        gl.drawArrays(gl.LINES, 0, vertices.length);
     }
-
-      
 
     // call the main program
     main();
